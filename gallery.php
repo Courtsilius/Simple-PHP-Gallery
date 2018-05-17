@@ -55,7 +55,6 @@ foreach ($arr_img as $key => $value) {
 	echo "<tr><td><a target='_blank' href='./".$key."'>";
 	$preview_extensions = array('png', 'jpg', 'jpeg', 'gif');
 	$arr_size = sizeof($filetype) -1;
-	echo $arr_size;
 	$file_ext =strtolower($filetype[1]);
 	if(in_array($file_ext, $preview_extensions)) {
 		echo "<img src=".$key."></img>";
