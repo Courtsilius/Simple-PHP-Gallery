@@ -1,7 +1,7 @@
 # Simple PHP Gallery
 Lists all of the files with name and size and a preview if available.
 
-## ToDo List:
+## Roadmap:
 * Add more options to sort the list.
 * Making it possible to make files private and still show up in the list.
 * Maybe add a possibility implement certain user logins, each with their own home directories. 
