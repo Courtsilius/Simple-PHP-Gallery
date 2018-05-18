@@ -55,7 +55,7 @@ foreach ($arr_img as $key => $value) {
 	echo "<tr><td><a target='_blank' href='./".$key."'>";
 	$preview_extensions = array('png', 'jpg', 'jpeg', 'gif');
 	$arr_size = sizeof($filetype) -1;
-	$file_ext =strtolower($filetype[1]);
+	$file_ext =strtolower($filetype[$arr_size]);
 	if(in_array($file_ext, $preview_extensions)) {
 		echo "<img src=".$key."></img>";
 	}else{
@@ -77,7 +77,7 @@ function cmp($a, $b) {
     }
     return ($a > $b) ? -1 : 1;
 }
-function makeprivate($file){ 
+function makeprivate($file){
 	//TODO
 }
 function human_filesize($bytes, $decimals = 2) {
