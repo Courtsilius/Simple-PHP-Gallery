@@ -23,7 +23,13 @@ uasort($arr_img, 'cmp'); //Sorting the Array by Date
 <head>
 <title>Simple PHP Gallery</title>
 <style>
+p,button {
+    font-family: "Lucida Sans Unicode", Lucida Grande, sans-serif;
+    font-size: 15;
+}
 td, th {
+    font-family: "Lucida Sans Unicode", Lucida Grande, sans-serif;
+    font-size: 15;
     border: 1px solid #ddd;
     padding: 8px;
 }
@@ -46,9 +52,9 @@ img{
 </style>
 </head>
 <body>
-Total number of items:<?php echo sizeof($arr_img);?>
+<p>Total number of items: <?php echo sizeof($arr_img);?></p>
 <form method="post">
-Number of items to display:
+<p>Number of items to display:
 <select name = "sortno">
  <option <?php if ($sort == 25){echo "selected='selected'";}?> value="25">25</option>
  <option <?php if ($sort == 50){echo "selected='selected'";}?> value="50">50</option>
@@ -58,6 +64,7 @@ Number of items to display:
  <option <?php if ($sort == "All" || $sort==0){echo "selected='selected'";}?> value="All">All</option>
 </select>
 <input type='submit' name='amount' value='Change'/>
+</p>
 </form>
 <table>
   <tr><th>No.</th><th>Preview</th><th>Name</th><th>Date</th><th>Size</th><th>Delete</th></tr>
