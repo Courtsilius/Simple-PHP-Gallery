@@ -9,10 +9,13 @@ if(isset($_POST['amount'])){
 }
 if ($handle = opendir('.')) {
 	$arr_img = array();
+	$totalsize = 0;
   while (false !== ($entry = readdir($handle))) {
   if ($entry != "." && $entry != ".." && $entry != basename(__FILE__) && !is_dir($entry)) {
+	  
       $arrayname = array($entry => filemtime($entry));
       $arr_img += $arrayname;
+	  $totalsize += filesize($entry);
       }
   }
 	closedir($handle);
@@ -52,7 +55,7 @@ img{
 </style>
 </head>
 <body>
-<p>Total number of items: <?php echo sizeof($arr_img);?></p>
+<p>There are <?php echo sizeof($arr_img);?> items in this gallery, taking up <?php echo human_filesize($totalsize);?>.</p>
 <form method="post">
 <p>Number of items to display:
 <select name = "sortno">
