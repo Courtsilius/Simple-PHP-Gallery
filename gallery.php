@@ -1,4 +1,10 @@
 <?php
+##################################################
+# Simple PHP Gallery
+# Made by Callonz
+# Version 1.0
+# https://github.com/Callonz/Simple-PHP-Gallery/
+##################################################
 if(isset($_POST['delete'])){
 	del_file($_POST['delete']);
 }
@@ -10,14 +16,13 @@ if(isset($_POST['amount'])){
 if ($handle = opendir('.')) {
 	$arr_img = array();
 	$totalsize = 0;
-  while (false !== ($entry = readdir($handle))) {
-  if ($entry != "." && $entry != ".." && $entry != basename(__FILE__) && !is_dir($entry)) {
-	  
-      $arrayname = array($entry => filemtime($entry));
-      $arr_img += $arrayname;
-	  $totalsize += filesize($entry);
-      }
-  }
+	while (false !== ($entry = readdir($handle))) {
+		if ($entry != "." && $entry != ".." && $entry != "index.php" && $entry != basename(__FILE__) && !is_dir($entry)) {		  
+			$arrayname = array($entry => filemtime($entry));
+			$arr_img += $arrayname;
+			$totalsize += filesize($entry);
+		}
+	}
 	closedir($handle);
 }
 uasort($arr_img, 'cmp'); //Sorting the Array by Date
