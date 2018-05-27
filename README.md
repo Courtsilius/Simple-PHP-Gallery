@@ -1,6 +1,9 @@
 # Simple PHP Gallery
 Lists all of the files with name and size and a preview if available.
 
+Example of this Gallery in v1.0:
+![alt text](https://i.callonz.com/bb658b01.png)
+
 ## Roadmap:
 * Add more options to sort the list.
 * Making it possible to make files private and still show up in the list.
