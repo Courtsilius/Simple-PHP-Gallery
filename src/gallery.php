@@ -2,13 +2,13 @@
 ##################################################
 # Simple PHP Gallery
 # Made by Callonz
-# Version 1.0
+# Version 1.1
 # https://github.com/Callonz/Simple-PHP-Gallery/
 ##################################################
 if(isset($_POST['delete'])){
 	del_file($_POST['delete']);
 }
-if(isset($_POST['amount'])){
+if(isset($_POST['amount'])){ //Checking if user has sorted, if not, defaults to showing 25 items.
   $sort = $_POST['sortno'];
 }else{
   $sort=25;
@@ -16,8 +16,9 @@ if(isset($_POST['amount'])){
 if ($handle = opendir('.')) {
 	$arr_img = array();
 	$totalsize = 0;
+	$disallow = [".","..","index.php",basename(__FILE__)]; //Add items that should be excluded from the gallery in this array
 	while (false !== ($entry = readdir($handle))) {
-		if ($entry != "." && $entry != ".." && $entry != "index.php" && $entry != basename(__FILE__) && !is_dir($entry)) {		  
+		if (!in_array($entry, $disallow) && !is_dir($entry)) {			
 			$arrayname = array($entry => filemtime($entry));
 			$arr_img += $arrayname;
 			$totalsize += filesize($entry);
@@ -93,7 +94,7 @@ foreach ($arr_img as $key => $value) {
 	echo "</a></td><td><a target='_blank' href='./".$key."'>".$key."</a></td>
 		<td>".date("F d Y H:i:s",$value)."</td><td>".human_filesize(filesize($key))."</td><td><form method='POST'><button type='submit' name='delete' value='".$key."'/>Delete</button>
 		</form></td></tr>";
-    if($sort<>0 && $sort<>"All" && $sort_no>=($sort-1)){
+    if($sort<>0 && $sort<>"All" && $sort_no>=($sort-1)){ //dirty method of stopping the loop at the wanted maximum 
        break;
     }
     $sort_no++;
