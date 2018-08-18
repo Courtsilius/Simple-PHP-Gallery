@@ -1,6 +1,3 @@
-### [For new versions please check out this project's GitLab page](https://gitlab.com/Callonz/Simple-PHP-Gallery)
-
-
 # Simple PHP Gallery
 Lists all of the files with name and size and a preview if available.
 
