@@ -2,35 +2,38 @@
 ##################################################
 # Simple PHP Gallery
 # Made by Callonz
-# Version 1.1
+# Version 1.2
 # https://github.com/Callonz/Simple-PHP-Gallery/
 ##################################################
-if(isset($_POST['delete'])){
+include 'config.php';
+if(isset($_POST['delete']) && $ALLOWDELETION){
 	del_file($_POST['delete']);
 }
-if(isset($_POST['amount'])){ //Checking if user has sorted, if not, defaults to showing 25 items.
+if(isset($_POST['amount'])){ //Checking if user has sorted, if not, uses default value from config
   $sort = $_POST['sortno'];
 }else{
-  $sort=25;
+  $sort=$DEFAULTNUMBEROFFILES;
 }
-if ($handle = opendir('.')) {
-	$arr_img = array();
-	$totalsize = 0;
-	$disallow = [".","..","index.php",basename(__FILE__)]; //Add items that should be excluded from the gallery in this array
-	while (false !== ($entry = readdir($handle))) {
-		if (!in_array($entry, $disallow) && !is_dir($entry)) {			
-			$arrayname = array($entry => filemtime($entry));
-			$arr_img += $arrayname;
-			$totalsize += filesize($entry);
+foreach($FILEPATH as $dir){
+	if ($handle = opendir($dir)) {
+		$arr_img = array();
+		$totalsize = 0;
+		array_push($DISALLOW,basename(__FILE__)); //adding self to list of disallowed items
+		while (false !== ($entry = readdir($handle))) {
+			if (!in_array($entry, $DISALLOW) && !is_dir($entry)) {			
+				$arrayname = array($dir.$entry => filemtime($dir.$entry));
+				$arr_img += $arrayname;
+				$totalsize += filesize($dir.$entry);
+			}
 		}
+		closedir($handle);
 	}
-	closedir($handle);
 }
 uasort($arr_img, 'cmp'); //Sorting the Array by Date
  ?>
 <html>
 <head>
-<title>Simple PHP Gallery</title>
+<title><?php echo $TITLE ?></title>
 <style>
 p,button {
     font-family: "Lucida Sans Unicode", Lucida Grande, sans-serif;
@@ -64,36 +67,39 @@ img{
 <p>There are <?php echo sizeof($arr_img);?> items in this gallery, taking up <?php echo human_filesize($totalsize);?>.</p>
 <form method="post">
 <p>Number of items to display:
+
 <select name = "sortno">
- <option <?php if ($sort == 25){echo "selected='selected'";}?> value="25">25</option>
- <option <?php if ($sort == 50){echo "selected='selected'";}?> value="50">50</option>
- <option <?php if ($sort == 100){echo "selected='selected'";}?> value="100">100</option>
- <option <?php if ($sort == 150){echo "selected='selected'";}?> value="150">150</option>
- <option <?php if ($sort == 250){echo "selected='selected'";}?> value="250">250</option>
- <option <?php if ($sort == "All" || $sort==0){echo "selected='selected'";}?> value="All">All</option>
+<?php 
+foreach($NUMBEROFFILES as $limit){
+	echo '<option ';
+	if ($sort == $limit){echo "selected='selected'";} 
+	echo ' value="'.$limit.'">'.$limit.'</option>';
+} ?>
+<option <?php if ($sort == "All" || $sort==0){echo "selected='selected'";}?> value="All">All</option>
 </select>
 <input type='submit' name='amount' value='Change'/>
 </p>
 </form>
 <table>
-  <tr><th>No.</th><th>Preview</th><th>Name</th><th>Date</th><th>Size</th><th>Delete</th></tr>
+  <tr><th>No.</th><th>Preview</th><th>Name</th><th>Date</th><th>Size</th><?php if($ALLOWDELETION){echo'<th>Delete</th>';}?></tr>
 <?php
 
 $sort_no=0;
 foreach ($arr_img as $key => $value) {
 	$filetype = explode(".", $key);
 	echo "<tr><td>".($sort_no+1)."<td><a target='_blank' href='./".$key."'>";
-	$preview_extensions = array('png', 'jpg', 'jpeg', 'gif');
+	
 	$arr_size = sizeof($filetype) -1;
 	$file_ext =strtolower($filetype[$arr_size]);
-	if(in_array($file_ext, $preview_extensions)) {
-		echo "<img src=".$key."></img>";
+	if(in_array($file_ext, $PREVIEWEXTENSIONS)) {
+		echo "<img src='".$key."'></img>";
 	}else{
 		echo "<p>No preview available.</p>";
 	}
 	echo "</a></td><td><a target='_blank' href='./".$key."'>".$key."</a></td>
-		<td>".date("F d Y H:i:s",$value)."</td><td>".human_filesize(filesize($key))."</td><td><form method='POST'><button type='submit' name='delete' value='".$key."'/>Delete</button>
-		</form></td></tr>";
+		<td>".date("F d Y H:i:s",$value)."</td><td>".human_filesize(filesize($key))."</td>";
+	if($ALLOWDELETION){echo "<td><form method='POST'><button type='submit' name='delete' value='".$key."'/>Delete</button></form></td>";}
+	echo "</tr>";
     if($sort<>0 && $sort<>"All" && $sort_no>=($sort-1)){ //dirty method of stopping the loop at the wanted maximum 
        break;
     }
