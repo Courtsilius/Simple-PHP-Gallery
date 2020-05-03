@@ -14,10 +14,21 @@ if(isset($_POST['amount'])){ //Checking if user has sorted, if not, uses default
 }else{
   $sort=$DEFAULTNUMBEROFFILES;
 }
-foreach($FILEPATH as $dir){
+$arr_img = array();
+$totalsize = 0;
+$folders = $FILEPATH;
+if(isset($_POST["checkedfilePaths"])){
+	$newFilepath = [];
+	foreach($folders as $path){
+		unset($folders);
+		if (in_array($path,$_POST["checkedfilePaths"])){
+			array_push($newFilepath,$path);
+		}
+	}
+	$folders = $newFilepath;
+}
+foreach($folders as $dir){
 	if ($handle = opendir($dir)) {
-		$arr_img = array();
-		$totalsize = 0;
 		array_push($DISALLOW,basename(__FILE__)); //adding self to list of disallowed items
 		while (false !== ($entry = readdir($handle))) {
 			if (!in_array($entry, $DISALLOW) && !is_dir($entry)) {			
@@ -66,10 +77,32 @@ img{
 <body>
 <p>There are <?php echo sizeof($arr_img);?> items in this gallery, taking up <?php echo human_filesize($totalsize);?>.</p>
 <form method="post">
+<?php
+if (sizeof($FILEPATH)>1){
+	echo '<p>Only show filed from these directories: ';
+	if(isset($_POST["checkedfilePaths"])){
+		foreach($FILEPATH as $path){
+			if(in_array($path, $_POST["checkedfilePaths"])){
+				echo '<input type="checkbox" name="checkedfilePaths[]" value="'.$path.'" checked>'.$path;
+			}else{
+				echo '<input type="checkbox" name="checkedfilePaths[]" value="'.$path.'">'.$path;
+			}
+		}
+		
+	}else{
+		foreach($FILEPATH as $path){
+			echo '<input type="checkbox" name="checkedfilePaths[]" value="'.$path.'" checked>'.$path;
+		}
+	}
+	echo '<input type="checkbox" name="checkedfilePaths[]" value="" hidden checked></p>';
+}
+?>
 <p>Number of items to display:
+
 
 <select name = "sortno">
 <?php 
+
 foreach($NUMBEROFFILES as $limit){
 	echo '<option ';
 	if ($sort == $limit){echo "selected='selected'";} 
