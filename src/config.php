@@ -9,6 +9,8 @@ $ALLOWDELETION = false;
 $FILEPATH = ["./"]; //Filepath needs to have a slash / at the end
 $NUMBEROFFILES = [25,50,100,150,200,250]; //Dropdownmenu for number of files to show
 $DEFAULTNUMBEROFFILES = 25;
-$DISALLOW = [".","..","index.php",basename(__FILE__)]; //Add items that should be excluded from the gallery in this array3
+$DISALLOW = [".","..","index.php","timelapse.php",basename(__FILE__)]; //Add items that should be excluded from the gallery in this array3
 $PREVIEWEXTENSIONS = array('png', 'jpg', 'jpeg', 'gif'); //allowed filetypes for preview
+$ENABLETIMELAPSE = true; //Enables / Disables timelapse
+$DEFAULTTIMELAPSEVALUE = 1000; //Time between images
 ?>
