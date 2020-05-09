@@ -1,11 +1,13 @@
-<?php
+<!--
 ##################################################
 # Simple PHP Gallery
 # Made by Callonz
 # Version 1.3
-# https://github.com/Callonz/Simple-PHP-Gallery/
+# https://github.com/Courtsilius/Simple-PHP-Gallery/
 ##################################################
-include 'config.php';
+-->
+<?php
+include 'config/config.php';
 
 if(isset($_POST['delete']) && $ALLOWDELETION){
 	del_file($_POST['delete']);
@@ -50,6 +52,8 @@ uasort($arr_img, 'cmp'); //Sorting the Array by Date
 <html>
 <head>
 <title><?php echo $TITLE ?></title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="config/gallery.css">
 <?php
 if($ENABLETIMELAPSE){
 	$timelapseArray= array();
@@ -57,45 +61,17 @@ if($ENABLETIMELAPSE){
 		
 		array_push($timelapseArray,$key);
 	}
-	include 'timelapse.php';
+	include 'config/timelapse.php';
 }
 ?>
-<style>
-p,button {
-    font-family: "Lucida Sans Unicode", Lucida Grande, sans-serif;
-    font-size: 15;
-}
-td, th {
-    font-family: "Lucida Sans Unicode", Lucida Grande, sans-serif;
-    font-size: 15;
-    border: 1px solid #ddd;
-    padding: 8px;
-}
-
-tr:nth-child(even){background-color: #f2f2f2;}
-
-tr:hover {background-color: #ddd;}
-
-th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: left;
-    background-color: #797a79;
-    color: white;
-}
-.gimg{
-    max-width:200px;
-    max-height:200px;
-}
-
-</style>
 </head>
 <body>
+<center>
 <p>There are <?php echo sizeof($arr_img);?> items in this gallery, taking up <?php echo human_filesize($totalsize);?>.</p>
 <form method="post">
 <?php
 if (sizeof($FILEPATH)>1){
-	echo '<p>Only show filed from these directories: ';
+	echo '<p>Only show files from these directories: ';
 	if(isset($_POST["checkedfilePaths"])){
 		foreach($FILEPATH as $path){
 			if(in_array($path, $_POST["checkedfilePaths"])){
@@ -126,7 +102,7 @@ foreach($NUMBEROFFILES as $limit){
 <option <?php if ($sort == "All" || $sort==0){echo "selected='selected'";}?> value="All">All</option>
 </select>
 <input type='submit' name='amount' value='Change'/>
-<?php if($ENABLETIMELAPSE){ echo '<input class="btn popup_image"type="button" value="Timelapse"/>';}?>
+<?php if($ENABLETIMELAPSE){ echo '<br><p><input class="btn popup_image"type="button" onClick="openTimelapse(0)" value="Timelapse"/></p>';}?>
 </p>
 </form>
 
@@ -148,7 +124,12 @@ foreach ($arr_img as $key => $value) {
 	}
 	echo "</a></td><td><a target='_blank' href='./".$key."'>".$key."</a></td>
 		<td>".date("F d Y H:i:s",$value)."</td><td>".human_filesize(filesize($key))."</td>";
-	if($ALLOWDELETION){echo "<td><form method='POST'><button type='submit' name='delete' value='".$key."'/>Delete</button></form></td>";}
+	if($ALLOWDELETION ||$ALLOWIGNORE || $ENABLETIMELAPSE){
+		echo "<td>";
+		if($ALLOWDELETION){echo "<form class='delbtn' method='POST'><button class='gbtn' type='submit' title='Delete this file' name='delete' value='".$key."'/><i class='fa fa-trash-o'></i></button></form>";}
+		if($ALLOWIGNORE){echo "<form class='delbtn' method='POST'><button class='gbtn' type='submit' title='Ignore this file' name='ignore' ><i class='fa fa-eye-slash' aria-hidden='true'></i></button></form>";}
+		if($ENABLETIMELAPSE){ echo "<button title='Start timelapse from here' class='gbtn'><i class='fa fa-clock-o' aria-hidden='true'></i></button></td>";}
+	}
 	echo "</tr>";
     if($sort<>0 && $sort<>"All" && $sort_no>=($sort-1)){break;} //dirty method of stopping the loop at the wanted maximum 
     $sort_no++;
@@ -174,7 +155,8 @@ function human_filesize($bytes, $decimals = 2) {
 
 
 ?>
+<p><a href="https://github.com/Courtsilius/Simple-PHP-Gallery" target="_blank">Simple PHP Gallery on GitHub</a></p>
 
-
+</center>
 </body>
 </html>

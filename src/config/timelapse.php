@@ -1,6 +1,6 @@
-<script src="./js/jquery.min.1.11.3.js"></script>
-<script type="text/javascript" src="./js/w2ui-1.4.2.min.js"></script>
-<link rel="stylesheet" type="text/css" href="./js/w2ui-1.4.2.min.css" />
+<script src="./config/jquery.min.1.11.3.js"></script>
+<script type="text/javascript" src="./config/w2ui-1.4.2.min.js"></script>
+<link rel="stylesheet" type="text/css" href="./config/w2ui-1.4.2.min.css" />
 <script>
 
 <?php echo 'var images = ', json_encode($timelapseArray), ';'; ?>
@@ -33,7 +33,8 @@ async function startTimelapse(){
 }
 $(document).ready(function() {
 
-  $(".popup_image").on('click', function() {
+  //$(".popup_image").on('click', function() {
+	function openTimelapse(index){
     var height = $(window).height() * 0.8;
 	var width = $(window).width() * 0.8;
 	var imgheight = Number(height)*0.7;
