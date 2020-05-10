@@ -6,50 +6,64 @@
 
 <?php echo 'var images = ', json_encode($timelapseArray), ';'; ?>
 var playpause=0; //0 - Play, 1 - Pause
-var startID=0;
-var index=-1;
+var startID=0; //for pausing / stopping the timelapse
+var index=-1; //current image for timelapse, -1 means not started
 function sleep(ms) {
   return new Promise(
     resolve => setTimeout(resolve, ms)
   );
 }
 
-async function startTimelapse(index){
+async function startTimelapse(){
 	updatePlayPause();
 	startID++;
 	var i;
 	var startIndex
 	var waitTime = $("input[name=tbp]").val();
+	var startingPoint = index;
+	if(startingPoint == -1){
+		if($("input[name=order]:checked").val() == "des"){
+			startingPoint = 0;
+		}
+		if($("input[name=order]:checked").val() == "asc"){
+			
+			startingPoint = images.length-1;
+		}
+	}
 	if($("input[name=order]:checked").val() == "des"){
 		var currentID = startID;
-		for(i=0; i < images.length;i++){
+		for(i=startingPoint; i < images.length;i++){
 			document.getElementById("timelapseimg").src=images[i];
 			await sleep(waitTime);
+			index = i;
 			if(currentID != startID){break;}
 		};
 	}else{
 		var currentID = startID;
-		for(i=images.length-1; i >=0;i--){
+		for(i=startingPoint; i >=0;i--){
 			document.getElementById("timelapseimg").src=images[i];
 			await sleep(waitTime);
+			index = i;
 			if(currentID != startID){break;}
 		};
 	}
 }
 
 function updatePlayPause(){
-	console.log(playpause);
+	
 	if(playpause){
 		playpause=0;
-		document.getElementById("timelapseStartPausei").class="fa fa-play";
-		document.getElementById("timelapseStartPausebtn").onclick="startTimelapse(' + index + ' );";
+		document.getElementById("timelapseStartPausei").classList.remove('fa-pause');
+		document.getElementById("timelapseStartPausei").classList.add('fa-play');
+		document.getElementById("timelapseStartPausebtn").setAttribute('onclick','startTimelapse()');
 		return;
 	}
 	playpause=1;
-	document.getElementById("timelapseStartPausei").class="fa fa-pause";
-	document.getElementById("timelapseStartPausebtn").onclick="pauseTimelapse();";
-	
+	document.getElementById("timelapseStartPausei").classList.remove('fa-play');
+	document.getElementById("timelapseStartPausei").classList.add('fa-pause');
+	document.getElementById("timelapseStartPausebtn").setAttribute('onclick','pauseTimelapse()');
 
+	
 }
 
 function updateImage(){
@@ -65,24 +79,26 @@ function advanceImage(dir){
 	}
 	updateImage();
 	
-	//TODO
+
 }
 
-function pauseTImelapse(){
+function pauseTimelapse(){
+	updatePlayPause();
 	startID++;
 }
 
 function stopTimelapse(){
-	index = 0;
+	index = -1;
 	startID++;
 	updateImage();
 }
 
-function openTimelapse(index){
+function openTimelapse(start){
     var height = $(window).height() * 0.8;
 	var width = $(window).width() * 0.8;
 	var imgheight = Number(height)*0.7;
 	var imgwidth = Number(width)*0.7;
+	startingPoint = start;
     w2popup.open({
       title: 'Timelapse',
       body: '<div class="w2ui-centered"><img class="timg" id="timelapseimg" src="' + images[0] + '" style="max-width:' + imgwidth + 'px;max-height:' + imgheight + 'px;"></img></div>',
@@ -92,11 +108,5 @@ function openTimelapse(index){
     });
 
 }
-$(document).ready(function() {
 
-  $(".popup_image").on('click', function() {
-		console.log("kek");
-  });
-
-});
 </script>

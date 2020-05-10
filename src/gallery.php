@@ -103,7 +103,7 @@ foreach($NUMBEROFFILES as $limit){
 <option <?php if ($sort == "All" || $sort==0){echo "selected='selected'";}?> value="All">All</option>
 </select>
 <input type='submit' name='amount' value='Change'/>
-<?php if($ENABLETIMELAPSE){ echo '<br><p><input class="btn popup_image"type="button" onClick="openTimelapse(0)" value="Timelapse"/></p>';}?>
+<?php if($ENABLETIMELAPSE){ echo '<br><p><input class="btn popup_image"type="button" onClick="openTimelapse(-1)" value="Timelapse"/></p>';}?>
 </p>
 </form>
 
