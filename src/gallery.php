@@ -9,6 +9,14 @@
 <?php
 include 'config/config.php';
 
+function is_image($filepath) {
+	if (@is_array(getimagesize($filepath))) {
+			return true;
+	} else {
+			return false;
+	}
+}
+
 if(isset($_POST['delete']) && $ALLOWDELETION){
 	del_file($_POST['delete']);
 }
@@ -117,7 +125,7 @@ foreach ($arr_img as $key => $value) {
 	
 	$arr_size = sizeof($filetype) -1;
 	$file_ext =strtolower($filetype[$arr_size]);
-	if(in_array($file_ext, $PREVIEWEXTENSIONS)) {
+	if(is_image($key)) {
 		echo "<img class='gimg' src='".$key."'></img>";
 	}else{
 		echo "<p>No preview available.</p>";
