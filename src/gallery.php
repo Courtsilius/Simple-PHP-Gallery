@@ -115,7 +115,7 @@ foreach($NUMBEROFFILES as $limit){
 </form>
 
 <table>
-  <tr><th>No.</th><th>Preview</th><th>Name</th><th>Date</th><th>Size</th><?php if($ALLOWDELETION){echo'<th>Delete</th>';}?></tr>
+  <tr><th>No.</th><th>Preview</th><th>Name</th><th>Date</th><th>Size</th><?php if($ALLOWDELETION){echo'<th>Actions</th>';}?></tr>
 <?php
 
 $sort_no=0;

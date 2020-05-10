@@ -1,0 +1,10 @@
+ /* Style buttons */
+.mediabtn {
+  background-color: transparent; 
+  border: none; /* Remove borders */
+  /*color: white;  White text */
+  padding: 5px 5px; /* Some padding */
+  font-size: 20px !important; /* Set a font size */
+  cursor: pointer; /* Mouse pointer on hover */
+}
+
