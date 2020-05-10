@@ -38,6 +38,10 @@ async function startTimelapse(){
 			index = i;
 			if(currentID != startID){break;}
 		};
+		
+		if(index==images.length-1){
+			updatePlayPause();
+		}
 	}else{
 		var currentID = startID;
 		for(i=startingPoint; i >=0;i--){
@@ -46,6 +50,9 @@ async function startTimelapse(){
 			index = i;
 			if(currentID != startID){break;}
 		};
+		if(index==0){
+			updatePlayPause();
+		}
 	}
 }
 
@@ -102,7 +109,7 @@ function openTimelapse(start){
     w2popup.open({
       title: 'Timelapse',
       body: '<div class="w2ui-centered"><img class="timg" id="timelapseimg" src="' + images[0] + '" style="max-width:' + imgwidth + 'px;max-height:' + imgheight + 'px;"></img></div>',
-	  buttons: 'Time between Pictures in ms: <input name="tbp" type="text" value="<?php echo $DEFAULTTIMELAPSEVALUE ?>" size="5"> - <button class="mediabtn" title="Go back (when on pause)" onclick="advanceImage(-1);"><i class="fa fa-step-backward" aria-hidden="true"></i></button><button class="mediabtn" title="Stop Timelapse" onclick="stopTimelapse();"><i class="fa fa-stop" aria-hidden="true"></i></button><button class="mediabtn" title="Start Timelapse" id="timelapseStartPausebtn" onclick="startTimelapse(' + index + ' );"><i id="timelapseStartPausei" class="fa fa-play" aria-hidden="true"></i></button><button class="mediabtn" title="Go forward (when on pause)" onclick="advanceImage(1);"><i class="fa fa-step-forward" aria-hidden="true"></i></button> - <input type="radio" id="timelapseorder1" name="order" value="asc" checked> Ascending <input type="radio" id="timelapseorder2" name="order" value="des"> Descending',
+	  buttons: 'Time between Pictures in ms: <input name="tbp" type="text" value="<?php echo $DEFAULTTIMELAPSEVALUE ?>" size="5"> - <button class="mediabtn" title="Go back (when on pause)" onclick="advanceImage(-1);"><i class="fa fa-step-backward" aria-hidden="true"></i></button><button class="mediabtn" title="Stop Timelapse" onclick="stopTimelapse();"><i class="fa fa-stop" aria-hidden="true"></i></button><button class="mediabtn" title="Start Timelapse" id="timelapseStartPausebtn" onclick="startTimelapse(' + index + ' );"><i id="timelapseStartPausei" class="fa fa-play" aria-hidden="true"></i></button><button class="mediabtn" title="Go forward (when on pause)" onclick="advanceImage(1);"><i class="fa fa-step-forward" aria-hidden="true"></i></button> - <input type="radio" id="timelapseorder1" name="order" value="asc" checked> Forwards <input type="radio" id="timelapseorder2" name="order" value="des"> Backwards',
 	  width: width,
 	  height: height
     });
