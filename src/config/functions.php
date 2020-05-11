@@ -1,4 +1,6 @@
 <?php
+
+
 function is_audio($filepath) {
 	$allowed = array('audio/mpeg', 'audio/x-mpeg', 'audio/mpeg3', 'audio/x-mpeg-3', 'audio/aiff','audio/mid', 
 		'audio/x-aiff', 'audio/x-mpequrl','audio/midi', 'audio/x-mid','audio/x-midi','audio/wav',
@@ -42,5 +44,31 @@ function is_image($filepath) {
 	} else {
 			return false;
 	}
+}
+
+function ignore_file($filepath, $ignorepath){
+	if(!file_exists($ignorepath)){
+		file_put_contents($ignorepath, $current);
+		return;
+	}
+	$current = file_get_contents($ignorepath);
+	$current .= $filepath."\n";
+	file_put_contents($ignorepath, $current);
+}
+
+function update_disallow($disallowarray, $ignorepath){
+	if(file_exists($ignorepath)){
+		$handle = fopen($ignorepath, "r");
+		if ($handle) {
+			while (($line = fgets($handle)) !== false) {
+				array_push($disallowarray,stripslashes(str_replace("\n","",$line))); //adding self to list of disallowed items
+			}
+			
+			fclose($handle);
+		} else {
+			echo "Error with ignorelist";
+		} 
+	}
+	return $disallowarray;
 }
 ?>

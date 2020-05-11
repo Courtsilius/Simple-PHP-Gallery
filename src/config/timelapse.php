@@ -1,13 +1,14 @@
 <script src="./config/jquery.min.1.11.3.js"></script>
 <script type="text/javascript" src="./config/w2ui-1.4.2.min.js"></script>
-<link rel="stylesheet" type="text/css" href="./config/w2ui-1.4.2.min.css" />
-<link rel="stylesheet" type="text/css" href="./config/timelapse.css" />
+<link rel="stylesheet" type="text/css" href="./config/css/w2ui-1.4.2.min.css" />
+<link rel="stylesheet" type="text/css" href="./config/css/timelapse.css" />
 <script>
 
 <?php echo 'var images = ', json_encode($timelapseArray), ';'; ?>
 var playpause=0; //0 - Play, 1 - Pause
 var startID=0; //for pausing / stopping the timelapse
 var index=-1; //current image for timelapse, -1 means not started
+
 function sleep(ms) {
   return new Promise(
     resolve => setTimeout(resolve, ms)
@@ -85,8 +86,6 @@ function advanceImage(dir){
 		index=0;
 	}
 	updateImage();
-	
-
 }
 
 function pauseTimelapse(){
@@ -113,7 +112,10 @@ function openTimelapse(start){
 	  width: width,
 	  height: height
     });
-
+	if(start != -1){
+		index = start;
+		updateImage();
+	}
 }
 
 </script>

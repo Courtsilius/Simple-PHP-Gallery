@@ -13,13 +13,15 @@ include 'config/functions.php';
 if(isset($_POST['delete']) && $ALLOWDELETION){
 	del_file($_POST['delete']);
 }
+if(isset($_POST['ignore']) && $ALLOWIGNORE){
+	ignore_file($_POST['ignore'], $IGNOREFILEPATH);
+}
 if(isset($_POST['amount'])){ //Checking if user has sorted, if not, uses default value from config
   $sort = $_POST['sortno'];
 }else{
   $sort=$DEFAULTNUMBEROFFILES;
 }
 $arr_img = array();
-$imagetest = array();
 $totalsize = 0;
 $folders = $FILEPATH;
 if(isset($_POST["checkedfilePaths"])){
@@ -35,10 +37,10 @@ if(isset($_POST["checkedfilePaths"])){
 foreach($folders as $dir){
 	if ($handle = opendir($dir)) {
 		array_push($DISALLOW,basename(__FILE__)); //adding self to list of disallowed items
+		$DISALLOW = update_disallow($DISALLOW, $IGNOREFILEPATH);
 		while (false !== ($entry = readdir($handle))) {
-			if (!in_array($entry, $DISALLOW) && !is_dir($entry)) {			
+			if (!in_array($entry, $DISALLOW) && !in_array($dir.$entry, $DISALLOW) &&!is_dir($entry)) {	
 				$arrayname = array($dir.$entry => filemtime($dir.$entry));
-				array_push($imagetest,$dir.$entry);
 				$arr_img += $arrayname;
 				$totalsize += filesize($dir.$entry);
 			}
@@ -53,8 +55,8 @@ uasort($arr_img, 'cmp'); //Sorting the Array by Date
 <html>
 <head>
 <title><?php echo $TITLE ?></title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="config/gallery.css">
+<link rel="stylesheet" href="config/css/all.css">
+<link rel="stylesheet" href="config/css/gallery.css">
 <?php
 if($ENABLETIMELAPSE){
 	$timelapseArray= array();
@@ -131,9 +133,9 @@ foreach ($arr_img as $key => $value) {
 		<td>".date("F d Y H:i:s",$value)."</td><td>".human_filesize(filesize($key))."</td>";
 	if($ALLOWDELETION ||$ALLOWIGNORE || $ENABLETIMELAPSE){
 		echo "<td>";
-		if($ALLOWDELETION){echo "<form class='delbtn' method='POST'><button class='gbtn' type='submit' title='Delete this file' name='delete' value='".$key."'/><i class='fa fa-trash-o'></i></button></form>";}
-		if($ALLOWIGNORE){echo "<form class='delbtn' method='POST'><button class='gbtn' type='submit' title='Ignore this file' name='ignore' ><i class='fa fa-eye-slash' aria-hidden='true'></i></button></form>";}
-		if($ENABLETIMELAPSE){ echo "<button title='Start timelapse from here' class='gbtn'><i class='fa fa-clock-o' aria-hidden='true'></i></button></td>";}
+		if($ALLOWDELETION){echo "<form class='delbtn' method='POST'><button class='gbtn' type='submit' title='Delete this file' name='delete' value='".$key."'/><i class='fa fa-trash'></i></button></form>";}
+		if($ALLOWIGNORE){echo "<form class='delbtn' method='POST'><button class='gbtn' type='submit' title='Ignore this file' name='ignore' value='".$key."'><i class='fa fa-eye-slash' aria-hidden='true'></i></button></form>";}
+		if($ENABLETIMELAPSE){ echo "<button title='Start timelapse from here' class='gbtn' onclick='openTimelapse(".($sort_no+1).")'><i class='fa fa-clock' aria-hidden='true'></i></button></td>";}
 	}
 	echo "</tr>";
     if($sort<>0 && $sort<>"All" && $sort_no>=($sort-1)){break;} //dirty method of stopping the loop at the wanted maximum 

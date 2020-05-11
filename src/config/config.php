@@ -5,6 +5,7 @@ $TITLE  = "Simple PHP Gallery"; //title of tab
 $ALLOWDELETION = true;
 // Enables/Disables the ability to ignore files through an ignore button next to the entry. Set to disable by default.
 $ALLOWIGNORE = true;
+$IGNOREFILEPATH = "config/ignored.txt"; 
 // Current directory by default, allows for multiple paths to be iterated on
 // Keep in mind that the path needs to be accessible by the webservice and by extension the browser, e.g. sub directories 
 $FILEPATH = ["./","abc/"]; //Filepath needs to have a slash / at the end
