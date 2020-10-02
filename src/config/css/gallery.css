@@ -1,0 +1,45 @@
+ /* Style buttons */
+.gbtn {
+  background-color: transparent; 
+  border: 1px solid transparent; /* Remove borders */
+  /*color: white;  White text */
+  padding: 5px 5px; /* Some padding */
+  font-size: 16px; /* Set a font size */
+  cursor: pointer; /* Mouse pointer on hover */
+}
+
+/* Darker background on mouse-over */
+.gbtn:hover {
+  border: 1px solid black;
+
+} 
+
+.delbtn{
+	display: inline;
+}
+p,button {
+    font-family: "Lucida Sans Unicode", Lucida Grande, sans-serif;
+    font-size: 15;
+}
+td, th {
+    font-family: "Lucida Sans Unicode", Lucida Grande, sans-serif;
+    font-size: 15;
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+tr:nth-child(even){background-color: #f2f2f2;}
+
+tr:hover {background-color: #ddd;}
+
+th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #797a79;
+    color: white;
+}
+.gimg{
+    max-width:200px;
+    max-height:200px;
+}
