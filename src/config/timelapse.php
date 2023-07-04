@@ -1,4 +1,4 @@
-<script src="./config/jquery.min.1.11.3.js"></script>
+<script src="./config/jquery.min.js"></script>
 <script type="text/javascript" src="./config/w2ui-1.4.2.min.js"></script>
 <link rel="stylesheet" type="text/css" href="./config/css/w2ui-1.4.2.min.css" />
 <link rel="stylesheet" type="text/css" href="./config/css/timelapse.css" />
@@ -38,7 +38,7 @@ async function startTimelapse(){
 			await sleep(waitTime);
 			index = i;
 			if(currentID != startID){break;}
-		};
+		}
 		
 		if(index==images.length-1){
 			updatePlayPause();
@@ -50,7 +50,7 @@ async function startTimelapse(){
 			await sleep(waitTime);
 			index = i;
 			if(currentID != startID){break;}
-		};
+		}
 		if(index==0){
 			updatePlayPause();
 		}
@@ -58,7 +58,6 @@ async function startTimelapse(){
 }
 
 function updatePlayPause(){
-	
 	if(playpause){
 		playpause=0;
 		document.getElementById("timelapseStartPausei").classList.remove('fa-pause');
@@ -70,13 +69,12 @@ function updatePlayPause(){
 	document.getElementById("timelapseStartPausei").classList.remove('fa-play');
 	document.getElementById("timelapseStartPausei").classList.add('fa-pause');
 	document.getElementById("timelapseStartPausebtn").setAttribute('onclick','pauseTimelapse()');
-
-	
 }
 
 function updateImage(){
 	document.getElementById("timelapseimg").src=images[index];
 }
+
 function advanceImage(dir){
 	index = index + dir;
 	if(index > images.length-1){
