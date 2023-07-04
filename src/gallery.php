@@ -55,7 +55,7 @@ uasort($arr_img, 'cmp'); //Sorting the Array by Date
 <html>
 <head>
 <title><?php echo $TITLE ?></title>
-<link rel="stylesheet" href="config/css/all.css">
+<link rel="stylesheet" href="config/css/all.min.css">
 <link rel="stylesheet" href="config/css/gallery.css">
 <?php
 if($ENABLETIMELAPSE){
