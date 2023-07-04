@@ -1,7 +1,7 @@
 <!--
 ##################################################
 # Simple PHP Gallery
-# Made by Callonz
+# Made by Courtsilius
 # Version 1.3
 # https://github.com/Courtsilius/Simple-PHP-Gallery/
 ##################################################
